@@ -12,12 +12,18 @@ and puts them on an MQTT device called **Chromebox**.
 
 ## Supported hardware
 
-| Board family | Models | Status |
+| Board | Models | Status |
 |---|---|---|
-| fizz | Acer Chromebox CXi3 (Sion) | tested |
-| fizz | HP Chromebox G2 (Kench), ASUS Chromebox 3 (Teemo, Bleemo), Wukong | should work, same EC code. Please report |
-| fizz | Jax | no fan, the add-on exits |
-| anything else | puff (Chromebox 4), kalista, ... | experimental, opt-in, untested |
+| Sion | Acer Chromebox CXi3 | tested |
+| Kench | HP Chromebox G2 | should work (same EC code), please report |
+| Teemo | ASUS Chromebox 3 (CN65) | should work (same EC code), please report |
+| Wukong | CTL Chromebox CBx1, Promethean Chromebox, SMART Chromebox G3, ViewSonic NMP660 Chromebox | should work (same EC code, different fan RPMs), please report |
+| Jax | AOpen Chromebox Commercial 2, Newline Chromebox A10 | no fan, the add-on exits |
+| Excelsior | Google Meet kit (Kaby Lake) | different fan stop point, experimental mode only |
+| anything else | e.g. puff boards (Chromebox 4 generation) | experimental, opt-in, untested |
+
+The fizz EC code also knows a sixth variant, Bleemo, with no known retail model. Board to
+model names are from the [MrChromebox supported devices list](https://docs.mrchromebox.tech/docs/supported-devices.html).
 
 The add-on detects the board from the EC itself (`ectool version` and the CBI OEM id), not from
 the model name.

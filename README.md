@@ -10,8 +10,8 @@ exposes the thresholds, fan speed and temperatures as an MQTT device. The table 
 after every EC reset.
 
 Tested on an **Acer Chromebox CXi3**: fan off at idle (board 41 to 42 °C); under a
-10-minute full load the fan runs at its lowest step and the CPU holds 53 to 55 °C. Other **fizz** Chromeboxes (HP Chromebox G2, ASUS Chromebox 3) use the same EC
-code and should work. Other boards can try an experimental mode. See the
+10-minute full load the fan runs at its lowest step and the CPU holds 53 to 55 °C. Other **fizz** Chromeboxes (HP Chromebox G2, ASUS Chromebox 3, CTL Chromebox CBx1 and
+the other Wukong models) use the same EC code and should work. Other boards can try an experimental mode. See the
 [add-on documentation](ec_fan/DOCS.md).
 
 ### Install

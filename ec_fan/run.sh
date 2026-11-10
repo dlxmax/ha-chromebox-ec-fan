@@ -9,8 +9,8 @@
 # noisy, never hot.
 #
 # Two modes:
-#   fizz     Kench / Teemo / Sion / Wukong / Bleemo (HP Chromebox G2, ASUS Chromebox 3,
-#            Acer Chromebox CXi3, ...). The board firmware maps demand % to RPM through
+#   fizz     Kench / Teemo / Sion / Wukong / Bleemo (HP Chromebox G2, ASUS Chromebox 3 CN65,
+#            Acer Chromebox CXi3, CTL CBx1, ...). The board firmware maps demand % to RPM through
 #            a step table with hysteresis, so the entities are "Fan starts at" and
 #            "Fan stops at". Tested on Sion.
 #   generic  Any other Chrome EC with a fan, opt-in. The entities are the raw EC
