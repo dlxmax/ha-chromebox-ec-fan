@@ -1,0 +1,21 @@
+name: Chromebox EC Fan
+version: "3.0.0"
+slug: ec_fan
+description: Quiet the fan on a Chromebox running HAOS. Fan thresholds as MQTT entities, reapplied after EC resets
+url: https://github.com/dlxmax/ha-chromebox-ec-fan
+arch:
+  - amd64
+startup: services
+boot: auto
+init: false
+privileged:
+  - SYS_RAWIO
+services:
+  - mqtt:need
+options:
+  poll_interval: 60
+  experimental_other_boards: false
+schema:
+  poll_interval: int(15,3600)
+  experimental_other_boards: bool
+  fan_sensor: int(0,15)?

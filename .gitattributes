@@ -1,0 +1,2 @@
+*.sh text eol=lf
+ec_fan/ectool binary

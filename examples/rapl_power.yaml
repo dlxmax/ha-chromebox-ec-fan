@@ -1,0 +1,65 @@
+# Optional: platform (psys) and CPU package power on the Chromebox MQTT device.
+# Intel only. Add-ons cannot read /sys/class/powercap, Home Assistant core can.
+#
+# 1. Copy rapl_power.py to /config/chromebox/rapl_power.py
+# 2. Add the shell_command below to configuration.yaml and restart
+# 3. Add the automation (Settings > Automations > ... > Edit in YAML)
+# 4. Replace ec_fan_sion with your device's identifier: "ec_fan_" + the lowercase
+#    DMI product name (shown in the add-on log), e.g. ec_fan_kench, ec_fan_teemo.
+
+shell_command:
+  chromebox_rapl_power: python3 /config/chromebox/rapl_power.py
+
+automation:
+  - id: chromebox_power_to_mqtt
+    alias: Chromebox power to MQTT
+    description: >-
+      Every minute: reads Intel RAPL and publishes platform and CPU package power
+      to the Chromebox MQTT device. Republishes the discovery configs at HA start.
+    triggers:
+      - trigger: homeassistant
+        event: start
+        id: start
+      - trigger: time_pattern
+        seconds: "0"
+        id: poll
+    actions:
+      - if:
+          - condition: trigger
+            id: start
+        then:
+          # mqtt.publish payloads are templates: {% raw %} keeps value_template literal
+          - action: mqtt.publish
+            data:
+              topic: homeassistant/sensor/chromebox/platform_power/config
+              retain: true
+              payload: >-
+                {"name": "Platform power", "unique_id": "chromebox_platform_power",
+                "default_entity_id": "sensor.chromebox_platform_power",
+                "state_topic": "chromebox/power",
+                "value_template": "{% raw %}{{ value_json.psys }}{% endraw %}",
+                "unit_of_measurement": "W", "device_class": "power",
+                "state_class": "measurement", "expire_after": 180, "icon": "mdi:flash",
+                "device": {"identifiers": ["ec_fan_sion"]}}
+          - action: mqtt.publish
+            data:
+              topic: homeassistant/sensor/chromebox/cpu_package_power/config
+              retain: true
+              payload: >-
+                {"name": "CPU package power", "unique_id": "chromebox_cpu_package_power",
+                "default_entity_id": "sensor.chromebox_cpu_package_power",
+                "state_topic": "chromebox/power",
+                "value_template": "{% raw %}{{ value_json.package }}{% endraw %}",
+                "unit_of_measurement": "W", "device_class": "power",
+                "state_class": "measurement", "expire_after": 180, "icon": "mdi:cpu-64-bit",
+                "device": {"identifiers": ["ec_fan_sion"]}}
+      - action: shell_command.chromebox_rapl_power
+        response_variable: result
+        continue_on_error: true
+      - condition: template
+        value_template: "{{ result is defined and result.returncode == 0 }}"
+      - action: mqtt.publish
+        data:
+          topic: chromebox/power
+          payload: "{{ result.stdout }}"
+    mode: single
